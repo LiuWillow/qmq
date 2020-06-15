@@ -62,6 +62,7 @@ public final class BrokerMetaManager implements Disposable {
         return INSTANCE;
     }
 
+    //metaserver初始化，启动定时任务线程池，默认每隔5秒拉取一次数据
     public void init(BrokerStore brokerStore) {
         this.brokerStore = brokerStore;
         this.httpPortMapConfig = DynamicConfigLoader.load("broker-http-port-map.properties", false);

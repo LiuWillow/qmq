@@ -56,9 +56,8 @@ public class BrokerAcquireMetaProcessor implements NettyRequestProcessor {
         LOG.info("broker request BROKER_ACQUIRE_META: {}", brokerAddress);
 
         final BrokerAcquireMetaResponse resp = createResponse(hostname, port);
-        final Datagram datagram = RemotingBuilder.buildResponseDatagram(CommandCode.SUCCESS, command.getHeader(), out -> {
-            BrokerAcquireMetaResponseSerializer.serialize(resp, out);
-        });
+        final Datagram datagram = RemotingBuilder.buildResponseDatagram(CommandCode.SUCCESS, command.getHeader(),
+                out -> BrokerAcquireMetaResponseSerializer.serialize(resp, out));
 
         LOG.info("assign {} to {}", resp, brokerAddress);
         return CompletableFuture.completedFuture(datagram);

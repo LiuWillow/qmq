@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 获取slave server列表
  * @author xufeng.deng dennisdxf@gmail.com
  * @since 2019-04-02 11:58
  */

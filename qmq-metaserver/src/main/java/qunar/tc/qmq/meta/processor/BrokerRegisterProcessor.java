@@ -68,7 +68,7 @@ public class BrokerRegisterProcessor implements NettyRequestProcessor {
 
         QMon.brokerRegisterCountInc(groupName, requestType);
 
-        LOG.info("broker register request received. request: {}", brokerRequest);
+        LOG.info("接收到broker注册请求. request: {}", brokerRequest);
 
         if (brokerRole == BrokerRole.SLAVE.getCode()
                 || brokerRole == BrokerRole.DELAY_SLAVE.getCode()

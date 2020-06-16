@@ -74,6 +74,7 @@ public class ServerWrapper implements Disposable {
         final Store store = new DatabaseStore(jdbcTemplate);
         final BrokerStore brokerStore = new BrokerStoreImpl(jdbcTemplate);
         final BrokerMetaManager brokerMetaManager = BrokerMetaManager.getInstance();
+        //初始化，从数据库获取并刷新slaveMap
         brokerMetaManager.init(brokerStore);
 
         final ReadonlyBrokerGroupSettingStore readonlyBrokerGroupSettingStore = new ReadonlyBrokerGroupSettingStoreImpl(jdbcTemplate);
@@ -86,13 +87,13 @@ public class ServerWrapper implements Disposable {
         final BrokerAcquireMetaProcessor brokerAcquireMetaProcessor = new BrokerAcquireMetaProcessor(new BrokerStoreImpl(jdbcTemplate));
         final ReadonlyBrokerGroupSettingService readonlyBrokerGroupSettingService = new ReadonlyBrokerGroupSettingService(readonlyBrokerGroupSettingStore);
 
-        final NettyServer metaNettyServer = new NettyServer("meta", Runtime.getRuntime().availableProcessors(), port, new DefaultConnectionEventHandler("meta"));
+        //监听meta.server.port
+        final NettyServer metaNettyServer = new NettyServer("meta", Runtime.getRuntime().availableProcessors(), port,
+                new DefaultConnectionEventHandler("meta"));
         metaNettyServer.registerProcessor(CommandCode.CLIENT_REGISTER, clientRegisterProcessor);
         metaNettyServer.registerProcessor(CommandCode.BROKER_REGISTER, brokerRegisterProcessor);
         metaNettyServer.registerProcessor(CommandCode.BROKER_ACQUIRE_META, brokerAcquireMetaProcessor);
         metaNettyServer.start();
-
-        ClientDbConfigurationStore clientDbConfigurationStore = new ClientDbConfigurationStoreImpl();
 
         final MetaManagementActionSupplier actions = MetaManagementActionSupplier.getInstance();
         actions.register("AddBroker", new TokenVerificationAction(new AddBrokerAction(brokerStore)));
@@ -104,7 +105,7 @@ public class ServerWrapper implements Disposable {
         actions.register("RemoveSubjectBrokerGroup", new TokenVerificationAction(new RemoveSubjectBrokerGroupAction(store, cachedMetaInfoManager)));
         actions.register("AddNewSubject", new TokenVerificationAction(new AddNewSubjectAction(store)));
         actions.register("ExtendSubjectRoute", new TokenVerificationAction(new ExtendSubjectRouteAction(store, cachedMetaInfoManager)));
-        actions.register("AddDb", new TokenVerificationAction(new RegisterClientDbAction(clientDbConfigurationStore)));
+        actions.register("AddDb", new TokenVerificationAction(new RegisterClientDbAction(new ClientDbConfigurationStoreImpl())));
         actions.register("MarkReadonlyBrokerGroup", new TokenVerificationAction(new MarkReadonlyBrokerGroupAction(readonlyBrokerGroupSettingService)));
         actions.register("UnMarkReadonlyBrokerGroup", new TokenVerificationAction(new UnMarkReadonlyBrokerGroupAction(readonlyBrokerGroupSettingService)));
         actions.register("ResetOffset", new TokenVerificationAction(new ResetOffsetAction(store)));

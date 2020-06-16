@@ -83,9 +83,9 @@ public class NettyServer implements Disposable {
         try {
             channel = bootstrap.bind(port).await().channel();
         } catch (InterruptedException e) {
-            LOG.error("server start fail", e);
+            LOG.error("nettyServer启动失败", e);
         }
-        LOG.info("listen on port {}", port);
+        LOG.info("nettyServer启动成功，监听端口 {}", port);
     }
 
     @Override

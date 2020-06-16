@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * 获取subject对应的consumers列表
  * @author keli.wang
  * @since 2017/12/5
  */

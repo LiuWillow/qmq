@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 获取meta server ip + 端口（服务发现）
  * @author yunfeng.yang
  * @since 2017/9/1
  */

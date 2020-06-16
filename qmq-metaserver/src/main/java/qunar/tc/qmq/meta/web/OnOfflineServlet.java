@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 服务下线接口
  * yiqun.fan@qunar.com 2018/3/7
  */
 public class OnOfflineServlet extends HttpServlet {

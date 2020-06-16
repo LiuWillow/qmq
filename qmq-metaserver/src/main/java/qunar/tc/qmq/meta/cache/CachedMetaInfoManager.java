@@ -40,6 +40,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * meta数据缓存管理器
  * @author yunfeng.yang
  * @since 2017/8/30
  */
@@ -83,10 +84,13 @@ public class CachedMetaInfoManager implements Disposable {
     private volatile SetMultimap<String, String> readonlyBrokerGroupSettings = HashMultimap.create();
 
     public CachedMetaInfoManager(DynamicConfig config, Store store, ReadonlyBrokerGroupSettingStore readonlyBrokerGroupSettingStore) {
+        //缓存刷新时间，默认5s
         this.refreshPeriodSeconds = config.getLong("refresh.period.seconds", DEFAULT_REFRESH_PERIOD_SECONDS);
         this.store = store;
         this.readonlyBrokerGroupSettingStore = readonlyBrokerGroupSettingStore;
+        //数据库里查并刷新各种map
         refresh();
+        //定时刷新
         initRefreshTask();
     }
 
@@ -135,7 +139,7 @@ public class CachedMetaInfoManager implements Disposable {
     }
 
     private void refresh() {
-        LOG.info("refresh meta info");
+        LOG.info("正在刷新 meta info");
         refreshBrokerGroups();
         refreshSubjectInfoCache();
         refreshGroupsAndSubjects();

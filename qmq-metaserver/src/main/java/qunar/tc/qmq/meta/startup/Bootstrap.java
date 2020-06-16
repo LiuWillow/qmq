@@ -33,6 +33,7 @@ public class Bootstrap {
         context.setResourceBase(System.getProperty("java.io.tmpdir"));
         DynamicConfig config = DynamicConfigLoader.load("metaserver.properties");
         final ServerWrapper wrapper = new ServerWrapper(config);
+        //启动netty
         wrapper.start(context.getServletContext());
 
         context.addServlet(MetaServerAddressSupplierServlet.class, "/meta/address");
@@ -42,6 +43,8 @@ public class Bootstrap {
         context.addServlet(SlaveServerAddressSupplierServlet.class, "/slave/meta");
 
         // TODO(keli.wang): allow set port use env
+
+        //用于meta server的服务发现，和meta.server.port不一样，后者用于netty，以tcp方式监听
         int port = config.getInt("meta.server.discover.port", 8080);
         final Server server = new Server(port);
         server.setHandler(context);

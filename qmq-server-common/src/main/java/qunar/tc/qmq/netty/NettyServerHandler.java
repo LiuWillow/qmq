@@ -72,7 +72,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RemotingComm
         final NettyRequestExecutor executor = commands.get(cmd.getHeader().getCode());
         if (executor == null) {
             cmd.release();
-            LOG.error("unknown command code, code: {}", cmd.getHeader().getCode());
+            LOG.error("未知请求code: {}", cmd.getHeader().getCode());
             Datagram response = RemotingBuilder.buildEmptyResponseDatagram(CommandCode.UNKNOWN_CODE, cmd.getHeader());
             ctx.writeAndFlush(response);
         } else {

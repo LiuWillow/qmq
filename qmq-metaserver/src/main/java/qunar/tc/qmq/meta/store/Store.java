@@ -26,6 +26,7 @@ import qunar.tc.qmq.protocol.consumer.MetaInfoRequest;
 import java.util.List;
 
 /**
+ *
  * @author yunfeng.yang
  * @since 2017/8/30
  */

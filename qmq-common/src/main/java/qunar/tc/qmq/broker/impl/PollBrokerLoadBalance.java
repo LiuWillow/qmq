@@ -30,12 +30,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class PollBrokerLoadBalance implements BrokerLoadBalance {
 
-    private static final Supplier<BrokerLoadBalance> SUPPLIER = Suppliers.memoize(new Supplier<BrokerLoadBalance>() {
-        @Override
-        public BrokerLoadBalance get() {
-            return new PollBrokerLoadBalance();
-        }
-    });
+    private static final Supplier<BrokerLoadBalance> SUPPLIER = Suppliers.memoize(PollBrokerLoadBalance::new);
 
     public static BrokerLoadBalance getInstance() {
         return SUPPLIER.get();

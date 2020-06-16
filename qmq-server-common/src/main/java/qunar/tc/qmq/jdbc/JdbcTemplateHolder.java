@@ -41,11 +41,11 @@ public class JdbcTemplateHolder {
 
 	private static DataSource createDataSource() {
 		final DynamicConfig config = DynamicConfigLoader.load("datasource.properties");
+		//从META-INF/services下面获取DataSourceFactory，用于给用户自定义的数据源工厂，没有的话就走QMQ默认的
 		ServiceLoader<DataSourceFactory> factories = ServiceLoader.load(DataSourceFactory.class);
 		for (DataSourceFactory factory : factories) {
 			return factory.createDataSource(config);
 		}
-
 		return new DefaultDataSourceFactory().createDataSource(config);
 	}
 

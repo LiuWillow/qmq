@@ -23,10 +23,12 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * 随机负载均衡
  * @author yunfeng.yang
  * @since 2017/8/30
  */
 public class RandomLoadBalance<T> extends AbstractLoadBalance<T> {
+    //TODO 没有别的负载均衡器吗
     @Override
     List<T> doSelect(String subject, List<T> brokerGroups, int minNum) {
         final ThreadLocalRandom random = ThreadLocalRandom.current();
